@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,12 +11,11 @@ namespace TestService.Models
 {
     public class Request
     {
-        [Required]
-        public long AccountId { get; set; }
+        [AccountIdValidation]
+        public long? AccountId { get; set; }
 
-        [Required]
-        public PeriodType PeriodType { get; set; }
-
+        [Required(ErrorMessage = "Нужно выбрать тип периода")]
+        public PeriodType? PeriodType { get; set; }
 
         public List<SelectListItem> GetExistsPeriodTypes()
         {
@@ -28,4 +29,27 @@ namespace TestService.Models
             return result;
         }
     }
+    public class AccountIdValidationAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value == null ||!int.TryParse(value.ToString(), out int _accountId))
+            {
+                return new ValidationResult("Введено некорректное значение ID");
+            }
+
+            var balanceFileParh = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "balance.json");
+            using StreamReader r = new StreamReader(balanceFileParh);
+            string json = r.ReadToEnd();
+            var resultList = JsonConvert.DeserializeObject<BalanceList>(json).Balances;
+
+            if (resultList.FirstOrDefault(x => x.AccountID == _accountId) == null)
+            {
+                return new ValidationResult("Аккаунта с таким ID не существует");
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+
 }

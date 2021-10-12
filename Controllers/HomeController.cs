@@ -24,26 +24,28 @@ namespace TestService.Controllers
 
         public async Task<IActionResult> GetBalances(Request request, [FromHeader] string accept)
         {
-            List<BalanceItem> balance = await data.GetBalanceData();
-            var balanceFileParh = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "balance.json");
-            using StreamReader r = new StreamReader(balanceFileParh);
-            string json = await r.ReadToEndAsync();
+            if (!ModelState.IsValid) return View("Index");
+            var conductanceList = await data.GetConductantList(request.AccountId.Value, request.PeriodType.Value);
 
-            if (HttpContext.Request.ContentType.ToLower() == "text/csv")
+            var jsonObject = new { Conductance = conductanceList };
+            var json = JsonConvert.SerializeObject(jsonObject);
+
+            if (HttpContext.Request.ContentType?.ToLower() == "application/csv")
             {
-                return Ok(jsonStringToCSV(json));
+                return Ok(ToCsv(json));
             }
-            else if(HttpContext.Request.ContentType.ToLower() == "text/xml")
+            else if (HttpContext.Request.ContentType?.ToLower() == "application/xml")
             {
-                XNode node = JsonConvert.DeserializeXNode(json, "Root");
+                XNode node = JsonConvert.DeserializeXNode(json, "Result");
                 return Ok(node.ToString());
             }
 
-            return Ok(balance);
+            return Ok(json);
         }
+
         public IActionResult Index() => View();
 
-        private List<string> jsonStringToCSV(string jsonContent)
+        private List<string> ToCsv(string jsonContent)
         {
             XmlNode xml = JsonConvert.DeserializeXmlNode("{records:{record:" + jsonContent + "}}");
             XmlDocument xmldoc = new XmlDocument();

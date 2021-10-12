@@ -9,6 +9,6 @@ namespace TestService.Models
     {
         Year = 1,
         Month = 2,
-        Quaret = 3
+        Quarer = 3
     }
 }

@@ -8,7 +8,6 @@ namespace TestService.Service
 {
     public interface IInitialData
     {
-        public Task<List<BalanceItem>> GetBalanceData();
-        public Task<List<PaymentItem>> GetPaymentData();
+        public Task<IEnumerable<Conductance>> GetConductantList(long accountId, PeriodType periodType);
     }
 }

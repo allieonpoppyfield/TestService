@@ -4,12 +4,10 @@
     <form asp-action="GetBalances" method="get">
         <div class="form-group">
             <label asp-for="AccountId">ID аккаунта</label>
-            <div asp-validation-for="AccountId" class="text-danger"></div>
             <input asp-for="AccountId" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="PeriodType">Тип периода</label>
-            <div asp-validation-for="PeriodType" class="text-danger"></div>
+            <label asp-for="PeriodType">Тип периода </label> <br/>
             <input asp-for="PeriodType" type="radio" value="1" />
             <span>Год</span> <br />
             <input asp-for="PeriodType" type="radio" value="2" />
