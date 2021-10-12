@@ -74,11 +74,6 @@ namespace TestService.Service
             return result;
         }
 
-
-
-
-
-
         private async Task<List<BalanceItem>> GetBalanceData()
         {
             var balanceFileParh = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "balance.json");

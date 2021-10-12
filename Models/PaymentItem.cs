@@ -23,9 +23,6 @@ namespace TestService.Models
         }
 
         public (int year, int quarter, int month) PeriodsTupple { get; private set; }
-
-
-
     }
 
     public class PaymentList

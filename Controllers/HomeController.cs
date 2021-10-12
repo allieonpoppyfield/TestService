@@ -15,7 +15,7 @@ namespace TestService.Controllers
 {
     public class HomeController : Controller
     {
-        private IInitialData data;
+        private readonly IInitialData data;
 
         public HomeController(IInitialData _data)
         {
