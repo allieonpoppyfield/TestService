@@ -22,7 +22,7 @@ namespace TestService.Controllers
             data = _data;
         }
 
-        public async Task<IActionResult> GetBalances(Request request, [FromHeader] string accept)
+        public async Task<IActionResult> GetBalances(Request request)
         {
             if (!ModelState.IsValid) return View("Index");
             var conductanceList = await data.GetConductantList(request.AccountId.Value, request.PeriodType.Value);
