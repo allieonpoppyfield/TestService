@@ -17,15 +17,12 @@ namespace TestService.Models
         [JsonProperty("calculation")]
         public decimal Calculation { get; set; }
 
-
         public int PeriodYear { get; private set; }
         public int PeriodMonth { get; private set; }
-
         public int PeriodQuarter { get; private set; }
         
         public (int year, int quarter, int mont) PeriodsTupple { get; private set; }
 
-        
         public void SetPeriods()
         {
             if (int.TryParse(Period.ToString()[0..4], out int _year) && int.TryParse(Period.ToString()[4..], out int _month))

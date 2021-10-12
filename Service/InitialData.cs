@@ -21,7 +21,7 @@ namespace TestService.Service
 
 
             var joinedList = _balances.GroupJoin(_payments, f => f.PeriodsTupple,
-                                                        s => s.PeriodsTupple, (f, s) =>
+                                                            s => s.PeriodsTupple, (f, s) =>
                     new
                     {
                         f.PeriodYear,
